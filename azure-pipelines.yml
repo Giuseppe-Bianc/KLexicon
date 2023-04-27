@@ -28,8 +28,8 @@ jobs:
     - task: Gradle@2
       inputs:
         workingDirectory: ''
-        gradleWrapperFile: '-Xmx3072m --parallel --offline'
-        gradleOptions: '-Xmx3072m'
+        gradleWrapperFile: 'gradlew'
+        gradleOptions: '-Xmx3072m --parallel --offline'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '17'
         jdkArchitectureOption: 'x64'
