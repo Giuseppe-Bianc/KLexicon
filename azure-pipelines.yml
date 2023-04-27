@@ -1,5 +1,5 @@
 trigger:
-- master
+  - master
 
 jobs:
 - job: Build
@@ -14,38 +14,25 @@ jobs:
   pool:
     vmImage: $(imageName)
   steps:
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '17'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/TEST-*.xml'
-    displayName: 'Build and test on $(imageName)'
-
-- job: Benchmark
-  strategy:
-    matrix:
-      windows:
-        imageName: 'windows-latest'
-      linux:
-        imageName: 'ubuntu-latest'
-      macOS:
-        imageName: 'macOS-latest'
-  pool:
-    vmImage: $(imageName)
-  steps:
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '17'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/*.json'
-    displayName: 'Build and run benchmarks on $(imageName)'
+    - task: Gradle@2
+      inputs:
+        workingDirectory: ''
+        gradleWrapperFile: 'gradlew'
+        gradleOptions: '-Xmx3072m --parallel --offline'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '17'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testResultsFiles: '**/TEST-*.xml'
+        tasks: 'clean build'
+    - task: Gradle@2
+      inputs:
+        workingDirectory: ''
+        gradleWrapperFile: '-Xmx3072m --parallel --offline'
+        gradleOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '17'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testResultsFiles: '**/*.json'
+        tasks: 'clean build benchmark'
