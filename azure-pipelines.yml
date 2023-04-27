@@ -48,4 +48,3 @@ jobs:
           publishJUnitResults: true
           testResultsFiles: '**/*.json'
           tasks: 'clean build benchmark'
-mostra il nome di  ogni task 
