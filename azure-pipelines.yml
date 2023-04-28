@@ -1,10 +1,21 @@
 trigger:
-  - master
+- master
 
-pool:
-  vmImage: ubuntu-latest
-
-steps:
+jobs:
+- job: Build
+  strategy:
+    matrix:
+      windows:
+        vmImage: 'windows-latest'
+      linux:
+        vmImage: 'ubuntu-latest'
+      macOS:
+        vmImage: 'macOS-latest'
+  pool:
+    vmImage: $(vmImage)
+  steps:
+  - checkout: self
+    fetchDepth: 1
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -24,6 +35,4 @@ steps:
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '17'
       jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/*.json'
-      tasks: 'clean build benchmark'
+      tasks: 'benchmark'
