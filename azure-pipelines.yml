@@ -1,38 +1,43 @@
 trigger:
-  - master
+- master
 
 jobs:
-  - job: Build
-    strategy:
-      matrix:
-        windows:
-          vmImage: 'windows-latest'
-        linux:
-          vmImage: 'ubuntu-latest'
-        macOS:
-          vmImage: 'macOS-latest'
-    pool:
-      vmImage: $(vmImage)
-    steps:
-      - checkout: self
-        fetchDepth: 1
-      - task: Gradle@2
-        inputs:
-          workingDirectory: ''
-          gradleWrapperFile: 'gradlew'
-          gradleOptions: '-Xmx3072m'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '17'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: true
-          testResultsFiles: '**/TEST-*.xml'
-          tasks: 'clean build'
-      - task: Gradle@2
-        inputs:
-          workingDirectory: ''
-          gradleWrapperFile: 'gradlew'
-          gradleOptions: '-Xmx3072m'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '17'
-          jdkArchitectureOption: 'x64'
-          tasks: 'benchmark'    
+- job: Build
+  strategy:
+    matrix:
+      windows:
+        vmImage: 'windows-latest'
+      linux:
+        vmImage: 'ubuntu-latest'
+      macOS:
+        vmImage: 'macOS-latest'
+  pool:
+    vmImage: $(vmImage)
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - task: Cache@2
+    inputs:
+      key: 'gradle | "$(Agent.OS)" | **/gradle-wrapper.jar'
+      restoreKeys: 'gradle | "$(Agent.OS)"'
+      path: '**/gradle-wrapper.jar'
+  - task: Gradle@2
+    inputs:
+      workingDirectory: ''
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '17'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/TEST-*.xml'
+      tasks: 'clean build'
+  - task: Gradle@2
+    inputs:
+      workingDirectory: ''
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '17'
+      jdkArchitectureOption: 'x64'
+      tasks: 'benchmark'
