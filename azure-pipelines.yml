@@ -25,18 +25,6 @@ jobs:
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
           tasks: 'clean build'
-  - job: Benchmark
-    strategy:
-      matrix:
-        windows:
-          vmImage: 'windows-latest'
-        linux:
-          vmImage: 'ubuntu-latest'
-        macOS:
-          vmImage: 'macOS-latest'
-    pool:
-      vmImage: $(vmImage)
-    steps:
       - task: Gradle@2
         inputs:
           workingDirectory: ''
@@ -47,4 +35,4 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: true
           testResultsFiles: '**/*.json'
-          tasks: 'clean build benchmark'
+          tasks: 'clean build benchmark'    
