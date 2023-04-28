@@ -33,6 +33,4 @@ jobs:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '17'
           jdkArchitectureOption: 'x64'
-          publishJUnitResults: true
-          testResultsFiles: '**/*.json'
-          tasks: 'clean build benchmark'    
+          tasks: 'benchmark'    
