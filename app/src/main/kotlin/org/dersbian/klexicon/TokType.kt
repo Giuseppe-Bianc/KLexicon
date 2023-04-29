@@ -5,6 +5,7 @@ enum class TokType(inline val text: String = "") {
     INVALID,
     NUMBER,
     IDENTIFIER,
+    KEYWORD,
     PLUS("+"),
     MINUS("-"),
     MULTIPLY("*"),

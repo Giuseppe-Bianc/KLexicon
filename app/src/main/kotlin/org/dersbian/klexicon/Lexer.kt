@@ -1,6 +1,7 @@
 package org.dersbian.klexicon
 
 class Lexer(inp: String) : LBase(inp) {
+    private val KEYWORDS = setOf("if", "else", "while", "for", "return")
 
     fun lexToJson(): Pair<List<Token>, String> {
         val tokens = lex()
@@ -71,7 +72,8 @@ class Lexer(inp: String) : LBase(inp) {
         val idL = id.length
         p += idL
         rp += idL
-        return Token(TokType.IDENTIFIER, id, mRs.range.first, rSp, l)
+        val tokType = if (id in KEYWORDS) TokType.KEYWORD else TokType.IDENTIFIER
+        return Token(tokType, id, mRs.range.first, rSp, l)
     }
 
     private fun skipWS() {
