@@ -28,10 +28,10 @@ class MyBenchmark {
     }
 
     /* A benchmark function. */
-    /*@Benchmark
+    @Benchmark
     final fun benchmarkLexer() {
         lexer.lex()
-    }*/
+    }
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     @Benchmark
     final fun benchmarkLexerToJSonS() {
