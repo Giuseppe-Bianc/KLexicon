@@ -11,6 +11,10 @@ class Lexer(inp: String) : LBase(inp) {
     fun lex(): List<Token> {
         while (p <= len) {
             when {
+                cRT == ' ' || cRT == '\t' || cRT == '\n' -> {
+                    p++
+                    rp++
+                }
                 cRTS.isWS() -> skipWS()
                 cRT.isDigit() -> toks.add(parseNum())
                 cRT.isLetter() -> toks.add(parseId())
@@ -39,7 +43,8 @@ class Lexer(inp: String) : LBase(inp) {
     }
 
     private fun skipComment() {
-        val tLen = COMMENT.find(inp, p)!!.value.length
+        val mtc = COMMENT.find(inp, p) ?: return
+        val tLen = mtc.value.length
         p += tLen
         rp += tLen
     }

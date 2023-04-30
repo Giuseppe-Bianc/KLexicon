@@ -34,7 +34,7 @@ abstract class LBase(@JvmField inline val inp: String) {
     val nXTLS: String
         inline get() = nXTL.toString()
 
-    inline fun matchToBInt(c: Char, type: NumType): Pair<String, Double?> {
+    fun matchToBInt(c: Char, type: NumType): Pair<String, Double?> {
         val mRs: MatchResult = when (type) {
             NumType.EXADECIMAL -> EXADECIMAL // provenienti da una cache
             NumType.OCTAL -> OCTAL
