@@ -4,7 +4,7 @@ import org.openjdk.jmh.annotations.*
 import java.util.concurrent.TimeUnit
 
 @State(Scope.Benchmark)
-@BenchmarkMode(Mode.SampleTime, Mode.AverageTime, Mode.Throughput)
+@BenchmarkMode(Mode.AverageTime, Mode.Throughput)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 class MyBenchmark {
     @Param("1", "5", "10")
@@ -28,13 +28,13 @@ class MyBenchmark {
     }
 
     /* A benchmark function. */
-    @Benchmark
+    /*@Benchmark
     final fun benchmarkLexer() {
         lexer.lex()
-    }
-    /*@OutputTimeUnit(TimeUnit.MICROSECONDS)
+    }*/
+    @OutputTimeUnit(TimeUnit.MICROSECONDS)
     @Benchmark
     final fun benchmarkLexerToJSonS() {
         lexer.lexToJson()
-    }*/
+    }
 }

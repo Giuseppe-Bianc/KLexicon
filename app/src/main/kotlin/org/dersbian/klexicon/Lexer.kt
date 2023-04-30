@@ -5,8 +5,7 @@ class Lexer(inp: String) : LBase(inp) {
 
     fun lexToJson(): Pair<List<Token>, String> {
         val tokens = lex()
-        val json = jackson.writeValueAsString(tokens)
-        return tokens to json
+        return tokens to jackson.writeValueAsString(tokens)
     }
 
     fun lex(): List<Token> {

@@ -72,6 +72,24 @@ class LexerTest {
     }
 
     @Test
+    fun testLexKeyWords() {
+        val lexer = Lexer("if(2>9) return 2")
+        val expectedTokens = listOf(
+            Token(TokType.KEYWORD, "if", 0,0,1),
+            Token(TokType.LPAREN, 2,2,1),
+            Token(TokType.NUMBER, "2", 3,3, 1, 2.0),
+            Token(TokType.GREATER, 4,4,1),
+            Token(TokType.NUMBER, "9", 5,5, 1, 9.0),
+            Token(TokType.RPAREN, 6,6,1),
+            Token(TokType.KEYWORD, "return", 8, 8,1),
+            Token(TokType.NUMBER, "2", 15,15, 1, 2.0),
+            Token(TokType.EOF, 16,16, 1)
+        )
+        val actualTokens = lexer.lex()
+        assertEquals(expectedTokens, actualTokens)
+    }
+
+    @Test
     fun testLexIdentifier() {
         val lexer = Lexer("foo bar_123")
         val expectedTokens = listOf(

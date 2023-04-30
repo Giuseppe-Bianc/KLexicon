@@ -9,7 +9,7 @@ object RxCach {
     val cache: Cache<String, Regex> by lazy {
         Caffeine.newBuilder()
             .maximumSize(15)
-            .expireAfterAccess(1, TimeUnit.SECONDS)
+            .expireAfterWrite(1, TimeUnit.SECONDS)
             .weakKeys()
             .weakValues()
             .build()
