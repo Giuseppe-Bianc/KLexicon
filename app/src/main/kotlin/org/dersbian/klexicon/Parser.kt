@@ -1,10 +1,8 @@
 package org.dersbian.klexicon
-
 sealed class Expr
 data class Num(val value: Double) : Expr()
 data class BinOp(val left: Expr, val op: Token, val right: Expr) : Expr()
 data class UnaryOp(val operator: Token, val operand: Expr) : Expr()
-data class ParentesizedOp(val OParenToken: Token, val expression: Expr, val CParenToken: Token) : Expr()
 
 class Parser(input: String) {
     private val tokens: List<Token> = Lexer(input).lex().toList()
@@ -40,7 +38,7 @@ class Parser(input: String) {
             match(TokType.LPAREN) -> {
                 val expr = expression()
                 consume(TokType.RPAREN, "Expected ')' after expression.")
-                ParentesizedOp(previous(), expr, previous())
+                expr
             }
 
             match(TokType.PLUS, TokType.MINUS) -> {
@@ -59,7 +57,6 @@ class Parser(input: String) {
                 advance()
                 true
             }
-
             else -> false
         }
     }

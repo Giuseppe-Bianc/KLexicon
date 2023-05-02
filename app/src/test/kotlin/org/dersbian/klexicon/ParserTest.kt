@@ -2,8 +2,6 @@ package org.dersbian.klexicon
 
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
-
 import kotlin.test.*
 
 class ParserTest {
@@ -33,7 +31,15 @@ class ParserTest {
         val parser = Parser("(1 + 2) * 3")
         val expr = parser.parse()
         val expected =
-            BinOp(BinOp(Num(1.0), Token(TokType.PLUS, 3, 3, 1), Num(2.0)), Token(TokType.MULTIPLY, 8, 8, 1), Num(3.0))
+            BinOp(
+                BinOp(
+                    Num(1.0),
+                    Token(TokType.PLUS, 3, 3, 1),
+                    Num(2.0)
+                ),
+                Token(TokType.MULTIPLY, 8, 8, 1),
+                Num(3.0)
+            )
         assertEquals(expected, expr)
     }
 

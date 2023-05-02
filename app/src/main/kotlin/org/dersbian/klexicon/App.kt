@@ -19,6 +19,7 @@ fun main() {
 fun prettyPrintEvaluated(input: String, node: Expr, indent: String = "", isLast: Boolean = true) {
     val evaluator = Evaluator(input)
     val res = evaluator.evaluate()
+    println(input)
     prettyPrint(node, indent, isLast)
     println(res)
 }
@@ -36,11 +37,6 @@ fun prettyPrint(node: Expr, indent: String = "", isLast: Boolean = true) {
         is UnaryOp -> {
             println(" UnaryOp(${node.operator})")
             prettyPrint(node.operand, "${indent}${if (isLast) "    " else "│   "}", true)
-        }
-
-        is ParentesizedOp -> {
-            println(" ParenthesizedOp")
-            prettyPrint(node.expression, "${indent}${if (isLast) "    " else "│   "}", true)
         }
     }
 }

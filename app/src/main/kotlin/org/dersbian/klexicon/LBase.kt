@@ -14,7 +14,6 @@ abstract class LBase(@JvmField inline val inp: String) {
     var p: Int = 0 // position
     var rp: Int = 0 // position relative to the line
     var l: Int = 1 // line
-    val toks: MutableList<Token> = mutableListOf()
     val len: Int = inp.length
     val inA = inp.toCharArray()
     val ind: IntRange

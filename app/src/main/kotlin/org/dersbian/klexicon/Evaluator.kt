@@ -1,11 +1,7 @@
 package org.dersbian.klexicon
 
 class Evaluator(input: String) {
-    val expr: Expr
-
-    init {
-        expr = Parser(input).parse()
-    }
+    val expr = Parser(input).parse()
 
     fun evaluate(): Double = evaluate(expr)
 
@@ -14,12 +10,7 @@ class Evaluator(input: String) {
             is Num -> expr.value
             is BinOp -> evaluateBinaryOp(expr)
             is UnaryOp -> evaluateUnaryOp(expr)
-            is ParentesizedOp -> evaluateParentesizedOp(expr)
         }
-    }
-
-    private fun evaluateParentesizedOp(expr: ParentesizedOp): Double {
-        return evaluate(expr.expression)
     }
 
     private fun evaluateBinaryOp(expr: BinOp): Double {
