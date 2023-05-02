@@ -19,9 +19,8 @@ fun main() {
 fun prettyPrintEvaluated(input: String, node: Expr, indent: String = "", isLast: Boolean = true) {
     val evaluator = Evaluator(input)
     val res = evaluator.evaluate()
-    println(input)
+    println("$input = $res")
     prettyPrint(node, indent, isLast)
-    println(res)
 }
 
 fun prettyPrint(node: Expr, indent: String = "", isLast: Boolean = true) {
