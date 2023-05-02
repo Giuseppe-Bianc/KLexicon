@@ -12,12 +12,7 @@ data class Token(
     @JvmField val value: Any? = null
 ) {
     constructor(type: TokType, pos: Int, relPos: Int, line: Int, textValue: Pair<String, Any?>) : this(
-        type,
-        textValue.first,
-        pos,
-        relPos,
-        line,
-        textValue.second
+        type, textValue.first, pos, relPos, line, textValue.second
     )
 
     constructor(type: TokType, pos: Int, relPos: Int, line: Int) : this(type, type.text, pos, relPos, line)

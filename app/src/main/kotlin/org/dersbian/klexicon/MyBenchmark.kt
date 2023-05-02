@@ -32,7 +32,6 @@ class MyBenchmark {
     final fun benchmarkLexer() {
         lexer.lex()
     }
-    @OutputTimeUnit(TimeUnit.MICROSECONDS)
     @Benchmark
     final fun benchmarkLexerToJSonS() {
         lexer.lexToJson()

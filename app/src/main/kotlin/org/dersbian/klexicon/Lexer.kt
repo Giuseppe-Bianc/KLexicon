@@ -3,43 +3,38 @@ package org.dersbian.klexicon
 class Lexer(inp: String) : LBase(inp) {
     private val KEYWORDS = setOf("if", "else", "while", "for", "return")
 
-    fun lexToJson(): Pair<List<Token>, String> {
+    fun lexToJson(): Pair<Sequence<Token>, String> {
         val tokens = lex()
         return tokens to jackson.writeValueAsString(tokens)
     }
 
-    fun lex(): List<Token> {
+    fun lex(): Sequence<Token> = sequence {
         while (p <= len) {
             when {
-                cRT == ' ' || cRT == '\t' || cRT == '\n' -> {
-                    p++
-                    rp++
-                }
                 cRTS.isWS() -> skipWS()
-                cRT.isDigit() -> toks.add(parseNum())
-                cRT.isLetter() -> toks.add(parseId())
+                cRT.isDigit() -> yield(parseNum())
+                cRT.isLetter() -> yield(parseId())
                 //EOF
-                cRT == NC -> toks.add(Token(TokType.EOF, p++, rp++, l))
+                cRT == NC -> yield(Token(TokType.EOF, p++, rp++, l))
                 cRT == '#' -> skipComment()
                 // Operatori
-                cRT == '+' -> toks.add(Token(TokType.PLUS, p++, rp++, l))
-                cRT == '-' -> toks.add(Token(TokType.MINUS, p++, rp++, l))
-                cRT == '*' -> toks.add(Token(TokType.MULTIPLY, p++, rp++, l))
-                cRT == '/' -> toks.add(Token(TokType.DIVIDE, p++, rp++, l))
-                cRT == '%' -> toks.add(Token(TokType.MODULO, p++, rp++, l))
-                cRT == '&' -> toks.add(Token(TokType.AND, p++, rp++, l))
-                cRT == '|' -> toks.add(Token(TokType.OR, p++, rp++, l))
-                cRT == '(' -> toks.add(Token(TokType.LPAREN, p++, rp++, l))
-                cRT == ')' -> toks.add(Token(TokType.RPAREN, p++, rp++, l))
-                cRT == '=' -> toks.add(Token(TokType.EQUAL, p++, rp++, l))
-                cRT == '!' -> toks.add(Token(TokType.NOT, p++, rp++, l))
-                cRT == '>' -> toks.add(Token(TokType.GREATER, p++, rp++, l))
-                cRT == '<' -> toks.add(Token(TokType.LESS, p++, rp++, l))
+                cRT == '+' -> yield(Token(TokType.PLUS, p++, rp++, l))
+                cRT == '-' -> yield(Token(TokType.MINUS, p++, rp++, l))
+                cRT == '*' -> yield(Token(TokType.MULTIPLY, p++, rp++, l))
+                cRT == '/' -> yield(Token(TokType.DIVIDE, p++, rp++, l))
+                cRT == '%' -> yield(Token(TokType.MODULO, p++, rp++, l))
+                cRT == '&' -> yield(Token(TokType.AND, p++, rp++, l))
+                cRT == '|' -> yield(Token(TokType.OR, p++, rp++, l))
+                cRT == '(' -> yield(Token(TokType.LPAREN, p++, rp++, l))
+                cRT == ')' -> yield(Token(TokType.RPAREN, p++, rp++, l))
+                cRT == '=' -> yield(Token(TokType.EQUAL, p++, rp++, l))
+                cRT == '!' -> yield(Token(TokType.NOT, p++, rp++, l))
+                cRT == '>' -> yield(Token(TokType.GREATER, p++, rp++, l))
+                cRT == '<' -> yield(Token(TokType.LESS, p++, rp++, l))
                 // Caratteri non validi
-                else -> toks.add(Token(TokType.INVALID, cRTS, p++, rp++, l))
+                else -> yield(Token(TokType.INVALID, cRTS, p++, rp++, l))
             }
         }
-        return toks
     }
 
     private fun skipComment() {
