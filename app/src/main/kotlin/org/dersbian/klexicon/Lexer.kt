@@ -14,6 +14,7 @@ class Lexer(inp: String) : LBase(inp) {
         Sequence::class -> sLex() as T
         else -> throw IllegalArgumentException("Unsupported generic type")
     }*/
+    fun lexList(): List<Token> = Lex().toList()
     fun lexArray(): Array<Token> = Lex().toList().toTypedArray()
 
     fun Lex(): Sequence<Token> = sequence {

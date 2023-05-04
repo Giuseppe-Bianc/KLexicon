@@ -20,7 +20,7 @@ class LexerTest {
             Token(TokType.RPAREN, ")", 14, 14, 1),
             Token(TokType.EOF, 15, 15, 1)
         )
-        val actualTokens = lexer.lex().toList()
+        val actualTokens = lexer.lexList()
         assertEquals(expectedTokens, actualTokens)
     }
     @Test
@@ -43,7 +43,7 @@ class LexerTest {
             Token(TokType.NUMBER, "4", 24, 9, 2, 4.0),
             Token(TokType.EOF, 25, 10, 2)
         )
-        val actualTokens = lexer.lex().toList()
+        val actualTokens = lexer.lexList()
         assertEquals(expectedTokens, actualTokens)
     }
 
@@ -56,7 +56,7 @@ class LexerTest {
             Token(TokType.INVALID, "£", 4, 4, 1),
             Token(TokType.EOF, 5, 5, 1)
         )
-        val actualTokens = lexer.lex().toList()
+        val actualTokens = lexer.lexList()
         assertEquals(expectedTokens, actualTokens)
     }
 
@@ -67,7 +67,7 @@ class LexerTest {
             Token(TokType.NUMBER, "2", 0, 0, 1, 2.0),
             Token(TokType.EOF, 13, 13, 1)
         )
-        val actualTokens = lexer.lex().toList()
+        val actualTokens = lexer.lexList()
         assertEquals(expectedTokens, actualTokens)
     }
 
@@ -85,7 +85,7 @@ class LexerTest {
             Token(TokType.NUMBER, "2", 15, 15, 1, 2.0),
             Token(TokType.EOF, 16, 16, 1)
         )
-        val actualTokens = lexer.lex().toList()
+        val actualTokens = lexer.lexList()
         assertEquals(expectedTokens, actualTokens)
     }
 
@@ -97,7 +97,7 @@ class LexerTest {
             Token(TokType.IDENTIFIER, "bar_123", 4, 4, 1),
             Token(TokType.EOF, 11, 11, 1)
         )
-        val actualTokens = lexer.lex().toList()
+        val actualTokens = lexer.lexList()
         assertEquals(expectedTokens, actualTokens)
     }
 }
