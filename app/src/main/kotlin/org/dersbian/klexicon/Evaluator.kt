@@ -5,7 +5,7 @@ class Evaluator(input: String) {
 
     fun evaluate(): Double = evaluate(expr)
 
-    private fun evaluate(expr: Expr): Double {
+    private inline fun evaluate(expr: Expr): Double {
         return when (expr) {
             is Num -> expr.value
             is BinOp -> evaluateBinaryOp(expr)
@@ -28,7 +28,6 @@ class Evaluator(input: String) {
     private fun evaluateUnaryOp(expr: UnaryOp): Double {
         val operand = evaluate(expr.operand)
         return when (expr.operator.type) {
-            TokType.PLUS -> operand
             TokType.MINUS -> -operand
             else -> throw UnsupportedOperationException("Unsupported operator ${expr.operator}")
         }

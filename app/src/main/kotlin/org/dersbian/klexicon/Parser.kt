@@ -5,16 +5,14 @@ data class BinOp(val left: Expr, val op: Token, val right: Expr) : Expr()
 data class UnaryOp(val operator: Token, val operand: Expr) : Expr()
 
 class Parser(input: String) {
-    private val tokens: List<Token> = Lexer(input).lex().toList()
+    private val tokens: Array<Token> = Lexer(input).lexArray()
     private var current = 0
     fun parse(): Expr = expression()
     private fun expression(): Expr {
         var expr = term()
 
         while (match(TokType.PLUS, TokType.MINUS)) {
-            val operator = previous()
-            val right = term()
-            expr = BinOp(expr, operator, right)
+            expr = BinOp(expr, previous(), term())
         }
 
         return expr
@@ -24,9 +22,7 @@ class Parser(input: String) {
         var expr = factor()
 
         while (match(TokType.MULTIPLY, TokType.DIVIDE)) {
-            val operator = previous()
-            val right = factor()
-            expr = BinOp(expr, operator, right)
+            expr = BinOp(expr, previous(), factor())
         }
 
         return expr
@@ -41,12 +37,7 @@ class Parser(input: String) {
                 expr
             }
 
-            match(TokType.PLUS, TokType.MINUS) -> {
-                val operator = previous()
-                val operand = factor()
-                UnaryOp(operator, operand)
-            }
-
+            match(TokType.MINUS) -> UnaryOp(previous(), factor())
             else -> error("Unexpected token ${peek().type}")
         }
     }
@@ -63,13 +54,14 @@ class Parser(input: String) {
 
     private fun consume(type: TokType, message: String): Token {
         if (check(type)) return advance()
-
         error(message)
     }
 
     private fun check(type: TokType): Boolean {
-        if (isAtEnd()) return false
-        return peek().type == type
+        return !isAtEnd() && when (peek().type) {
+            type -> true
+            else -> false
+        }
     }
 
     private fun advance(): Token {

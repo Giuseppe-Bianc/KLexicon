@@ -1,22 +1,14 @@
 package org.dersbian.klexicon
 
 class Lexer(inp: String) : LBase(inp) {
-    private val KEYWORDS = arrayOf("if", "else", "while", "for", "return")
+    private val KEYWORDS = setOf("if", "else", "while", "for", "return")
 
     fun lexToJson(): Pair<Sequence<Token>, String> {
-        val tokens = Lex()
+        val tokens = lex<Sequence<Token>>()
         return tokens to jackson.writeValueAsString(tokens)
     }
 
-    /*inline fun <reified T> lex(): T = when (T::class) {
-        List::class -> sLex().toList() as T
-        Array<Token>::class -> lexArray() as T
-        Sequence::class -> sLex() as T
-        else -> throw IllegalArgumentException("Unsupported generic type")
-    }*/
-    fun lexArray(): Array<Token> = Lex().toList().toTypedArray()
-
-    fun Lex(): Sequence<Token> = sequence {
+    inline fun <reified T> lex(): T = sequence {
         while (p <= len) {
             when {
                 cRTS.isWS() -> skipWS()
@@ -43,16 +35,24 @@ class Lexer(inp: String) : LBase(inp) {
                 else -> yield(Token(TokType.INVALID, cRTS, p++, rp++, l))
             }
         }
+    }.let {
+        when (T::class) {
+            List::class -> it.toList() as T
+            Sequence::class -> it as T
+            Set::class -> it.toSet() as T
+            Array<Token>::class -> it.toList().toTypedArray() as T
+            else -> throw IllegalArgumentException("Tipo di collezione non supportato")
+        }
     }
 
-    private fun skipComment() {
+    fun skipComment() {
         val mtc = COMMENT.find(inp, p) ?: return
         val tLen = mtc.value.length
         p += tLen
         rp += tLen
     }
 
-    private fun parseNum(): Token {
+    fun parseNum(): Token {
         var nt = ' '
         val sInd = p
         val rSInd = rp
@@ -72,18 +72,18 @@ class Lexer(inp: String) : LBase(inp) {
         return Token(TokType.NUMBER, sInd, rSInd, l, matchToBInt(nt, numberType))
     }
 
-    private fun parseId(): Token {
+    fun parseId(): Token {
         val rSp = rp
         val mRs: MatchResult = IDENTIFIER.find(inp, p) ?: return Token(TokType.EOF, p, rp, l)
         val id = mRs.value
         val idL = id.length
         p += idL
         rp += idL
-        val tokType = if (KEYWORDS.contains(id)) TokType.KEYWORD else TokType.IDENTIFIER
+        val tokType = if (id in KEYWORDS) TokType.KEYWORD else TokType.IDENTIFIER
         return Token(tokType, id, mRs.range.first, rSp, l)
     }
 
-    private fun skipWS() {
+    fun skipWS() {
         if (cRTS.isNotWS()) return
         while (cRTS.isWS()) {
             if (cRT == '\n') {

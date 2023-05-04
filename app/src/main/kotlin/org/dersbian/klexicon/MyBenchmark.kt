@@ -30,7 +30,7 @@ class MyBenchmark {
     /* A benchmark function. */
     @Benchmark
     final fun benchmarkLexer() {
-        lexer.lex()
+        lexer.Lex()
     }
     @Benchmark
     final fun benchmarkLexerToJSonS() {
