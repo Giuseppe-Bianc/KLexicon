@@ -80,7 +80,10 @@ class Lexer(inp: String) : LBase(inp) {
         val idL = id.length
         p += idL
         rp += idL
-        val tokType = if (KEYWORDS.contains(id)) TokType.KEYWORD else TokType.IDENTIFIER
+        val tokType = when (id) {
+            in KEYWORDS -> TokType.KEYWORD
+            else -> TokType.IDENTIFIER
+        }
         return Token(tokType, id, mRs.range.first, rSp, l)
     }
 
