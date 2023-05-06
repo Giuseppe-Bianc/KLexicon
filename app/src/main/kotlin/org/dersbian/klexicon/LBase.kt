@@ -11,10 +11,10 @@ abstract class LBase(@JvmField inline val inp: String) {
         require(StringUtils.isNotBlank(inp)) { "impossibile proseguire stringa vuota" }
     }
 
-    var p: Int = 0 // position
-    var rp: Int = 0 // position relative to the line
-    var l: Int = 1 // line
-    val len: Int = inp.length
+    var p = 0 // position
+    var rp = 0 // position relative to the line
+    var l = 1 // line
+    val len = inp.length
     val inA = inp.toCharArray()
     val ind: IntRange
         inline get() = inp.indices
